@@ -1,6 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render
-from catalog.models import Product
+from catalog.models import Product, Contact
 
 
 # Create your views here.
@@ -22,4 +22,7 @@ def contacts(request):
         return HttpResponse(
             f"{name}, указанные Вами телефон и сообщение получены<br>Телефон: {phone}<br>Сообщение: {message}"
         )
-    return render(request, "catalog/contacts.html")
+
+    queryset = Contact.objects.all()
+    context = {'contacts': queryset}
+    return render(request, "catalog/contacts.html", context)
