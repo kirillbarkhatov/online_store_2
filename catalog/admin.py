@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Category, Product
+from .models import Category, Product, Contact
 
 
 # Register your models here.
@@ -18,3 +18,10 @@ class ProductAdmin(admin.ModelAdmin):
     list_display = ("id", "name", "price", "category",)  # вывод колонок
     list_filter = ("category",) # добавление фильтра по указанному полю
     search_fields = ("name", "description",)  # поиск по указанному полю/полям
+
+
+@admin.register(Contact)
+class ContactAdmin(admin.ModelAdmin):
+    """Настройки отображения модели в админке"""
+
+    list_display = ("id", "first_name", "last_name", "email") # вывод колонок

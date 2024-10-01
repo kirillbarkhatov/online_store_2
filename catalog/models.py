@@ -41,8 +41,8 @@ class Product(models.Model):
 class Contact(models.Model):
     """Модель для описания контактных данных"""
 
-    first_name = models.CharField(max_length=150, null=True, blank=True, verbose_name='Имя')
-    last_name = models.CharField(max_length=150, null=True, blank=True, verbose_name='Фамилия')
+    first_name = models.CharField(max_length=150, verbose_name='Имя')
+    last_name = models.CharField(max_length=150, verbose_name='Фамилия')
     email = models.EmailField(verbose_name='Электронная почта')
 
     def __str__(self):
