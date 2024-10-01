@@ -43,8 +43,7 @@
                 </div>
 
                 <div class="card-body">
-                    {% block content %}
-                    {% for contact in contacts %}
+
                     <table class="table table-striped">
                         <thead>
                           <tr>
@@ -54,17 +53,22 @@
                             <th>Почта</th>
                           </tr>
                         </thead>
+
                         <tbody>
+                        {% block content %}
+                        {% for contact in contacts %}
                           <tr>
                             <th>{{contact.id}}</th>
                             <td>{{contact.first_name}}</td>
                             <td>{{contact.last_name}}</td>
                             <td>{{contact.email}}</td>
                           </tr>
+                        {% endfor %}
+                        {% endblock content %}
                         </tbody>
+
                     </table>
-                    {% endfor %}
-                    {% endblock content %}
+
                 </div>
 
 
