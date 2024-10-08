@@ -8,6 +8,7 @@
     <h1 class="display-4">Skystore</h1>
     <p class="lead">Skystore - это отличный вариант хранения ваших плагинов и примеров кода, который вы бы хотели
         продать</p>
+    <img src="image001.png">
 </div>
 
 <div class="container">
@@ -17,15 +18,15 @@
         <div class="col-4">
             <div class="card mb-4 box-shadow">
                 <div class="card-header">
-                    <h4 class="my-0 font-weight-normal">Удобный сервис рассылок</h4>
+                    <img src="{{ product.image }}">
                 </div>
                 <div class="card-body">
-                    <h5 class="card-title">{{product.name}}</h3>
-                    <p>Категория: {{product.category}}</p>
+                    <h5 class="card-title">{{ product.name }}</h3>
+                    <p>Категория: {{ product.category }}</p>
 
-                    <p>{{product.description|truncatechars:100}}</p>
+                    <p>{{ product.description|truncatechars:100 }}</p>
 
-                    <h3 class="card-title pricing-card-title">{{product.price}}</h3>
+                    <h3 class="card-title pricing-card-title">{{ product.price }}</h3>
                     <button type="button" class="btn btn-lg btn-block btn-outline-primary">Купить</button>
                 </div>
             </div>
