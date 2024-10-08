@@ -1,3 +1,5 @@
+from lib2to3.fixes.fix_input import context
+
 from django.http import HttpResponse
 from django.shortcuts import render
 
@@ -12,7 +14,10 @@ def home(request):
     for product in products:
         print(product.name)
 
-    return render(request, "catalog/home.html")
+    products = Product.objects.all()
+    context = {"products": products}
+
+    return render(request, "catalog/home.html", context)
 
 
 def contacts(request):
