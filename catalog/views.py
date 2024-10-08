@@ -20,6 +20,14 @@ def home(request):
     return render(request, "catalog/home.html", context)
 
 
+def product(request, pk):
+
+    product = Product.objects.get(pk=pk)
+    context = {"product": product}
+
+    return render(request, "catalog/product.html", context)
+
+
 def contacts(request):
     if request.method == "POST":
         name = request.POST.get("name")
