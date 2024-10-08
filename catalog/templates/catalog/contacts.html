@@ -41,6 +41,37 @@
                         </tr>
                     </table>
                 </div>
+
+                <div class="card-body">
+
+                    <table class="table table-striped">
+                        <thead>
+                          <tr>
+                            <th><abbr title="ID">ID</abbr></th>
+                            <th>Имя</th>
+                            <th>Фамилия</th>
+                            <th>Почта</th>
+                          </tr>
+                        </thead>
+
+                        <tbody>
+                        {% block content %}
+                        {% for contact in contacts %}
+                          <tr>
+                            <th>{{contact.id}}</th>
+                            <td>{{contact.first_name}}</td>
+                            <td>{{contact.last_name}}</td>
+                            <td>{{contact.email}}</td>
+                          </tr>
+                        {% endfor %}
+                        {% endblock content %}
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+
             </div>
         </div>
         <div class="col-lg-3 col-md-6 col-sm-12">
