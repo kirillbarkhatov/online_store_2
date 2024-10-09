@@ -1,3 +1,4 @@
+from django.core.paginator import Paginator
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.generic import CreateView
@@ -30,7 +31,13 @@ def home(request):
     for product in products:
         print(product.name)
 
-    products = Product.objects.all()
+    products_list = Product.objects.all()
+
+
+    paginator = Paginator(products_list, 3)
+    page_number = request.GET.get('page', 1)
+    products = paginator.page(page_number)
+
     context = {"products": products}
 
     return render(request, "catalog/home.html", context)
