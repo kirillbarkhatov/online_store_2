@@ -1,12 +1,28 @@
-from lib2to3.fixes.fix_input import context
-
 from django.http import HttpResponse
 from django.shortcuts import render
+from django.views.generic import CreateView
 
-from catalog.models import Contact, Product
+from catalog.forms import ProductForm
+from catalog.models import Contact, Product, Category
 
 
 # Create your views here.
+class AddProduct(CreateView):
+    # Модель куда выполняется сохранение
+    model = Product
+    # Класс на основе которого будет валидация полей
+    form_class = ProductForm
+    # Выведем все существующие записи на странице
+    extra_context = {'products': Product.objects.all()}
+    # Шаблон с помощью которого
+    # будут выводиться данные
+    template_name = 'catalog/add_product.html'
+    # На какую страницу будет перенаправление
+    # в случае успешного сохранения формы
+    success_url = '/add_product/'
+
+
+
 def home(request):
 
     # вывод в консоль 5 последних созданных продуктов
@@ -26,6 +42,23 @@ def product(request, pk):
     context = {"product": product}
 
     return render(request, "catalog/product.html", context)
+
+
+# def add_product(request):
+#     if request.method == "POST":
+#         name = request.POST.get("name")
+#         description = request.POST.get("description")
+#         image = request.POST.get("image")
+#         category = request.POST.get("category")
+#         price = request.POST.get("price")
+#         Product.objects.create(name=name, description=description, image=image, price=price)
+#         return HttpResponse(
+#             f"{name} - {description} - {image} - {category} - {price}"
+#         )
+#
+#     categories = Category.objects.all()
+#     context = {"categories": categories}
+#     return render(request, "catalog/add_product.html", context)
 
 
 def contacts(request):
