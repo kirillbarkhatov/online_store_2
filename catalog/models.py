@@ -34,6 +34,7 @@ class Product(models.Model):
         null=True,
         blank=True,
         related_name="products",
+        verbose_name="Категория",
     )
     price = models.DecimalField(
         max_digits=10, decimal_places=2, verbose_name="Цена в рублях"
