@@ -1,0 +1,76 @@
+{% extends 'catalog/base.html' %}
+
+{% block title %}Добавить продукт{% endblock %}
+
+{% block content %}
+
+
+<div class="container">
+    <div class="row text-start">
+
+
+        <div class="col-12">
+            <div class="card mb-4 box-shadow">
+
+                <div class="card-body">
+
+<!--                    <form method="post" action="" class="form-floating">-->
+<!--                    {% csrf_token %}-->
+
+<!--                        <div class="mb-3">-->
+<!--                          <label for="product_name" class="form-label">Наименование товара</label>-->
+<!--                          <input class="form-control" name="name" id="product_name" type="text" placeholder="Введите наименование товара" aria-label="default input example">-->
+<!--                        </div>-->
+
+<!--                        <div class="mb-3">-->
+<!--                          <label for="product_description" class="form-label">Описание товара</label>-->
+<!--                          <textarea class="form-control" name="description" id="product_description" placeholder="Введите описание товара" rows="3"></textarea>-->
+<!--                        </div>-->
+
+<!--                        <div class="mb-3">-->
+<!--                          <label for="formFile" class="form-label">Загрузите изображение товара</label>-->
+<!--                          <input class="form-control" name="image" type="file" id="formFile">-->
+<!--                        </div>-->
+
+<!--                        <div class="mb-3">-->
+<!--                            <label class="form-label">Выберете категорию</label>-->
+<!--                            <select class="form-select" name="category" aria-label="Default select example">-->
+<!--                                <option value="0" selected>&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;</option>-->
+<!--                                {% for category in categories %}-->
+<!--                                <option value="{{ category.pk }}">{{ category.name }}</option>-->
+<!--                                {% endfor %}-->
+<!--                            </select>-->
+<!--                        </div>-->
+
+<!--                        <div class="mb-3">-->
+<!--                            <label class="form-label">Введите стоимость товара</label>-->
+<!--                            <div class="input-group mb-3">-->
+<!--                              <span class="input-group-text">₽</span>-->
+<!--                              <input type="number" name="price" class="form-control" aria-label="Amount (to the nearest dollar)">-->
+<!--                              <span class="input-group-text">.00</span>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <button type="submit" class="btn btn-lg btn-block btn-outline-primary">Добавить продукт</button>-->
+<!--                    </form>-->
+
+
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <!-- Выводим каждое поле формы в отдельном параграфе -->
+                        {{ form.as_p }}
+                        <button type="submit">Загрузка</button>
+                    </form>
+
+
+
+
+
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+{% endblock %}
