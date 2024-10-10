@@ -4,7 +4,7 @@ from django.shortcuts import render
 from django.views.generic import CreateView
 
 from catalog.forms import ProductForm
-from catalog.models import Contact, Product, Category
+from catalog.models import Contact, Product
 
 
 # Create your views here.
@@ -14,14 +14,13 @@ class AddProduct(CreateView):
     # Класс на основе которого будет валидация полей
     form_class = ProductForm
     # Выведем все существующие записи на странице
-    extra_context = {'products': Product.objects.all()}
+    extra_context = {"products": Product.objects.all()}
     # Шаблон с помощью которого
     # будут выводиться данные
-    template_name = 'catalog/add_product.html'
+    template_name = "catalog/add_product.html"
     # На какую страницу будет перенаправление
     # в случае успешного сохранения формы
-    success_url = '/add_product/'
-
+    success_url = "/add_product/"
 
 
 def home(request):
@@ -33,9 +32,8 @@ def home(request):
 
     products_list = Product.objects.all()
 
-
     paginator = Paginator(products_list, 3)
-    page_number = request.GET.get('page', 1)
+    page_number = request.GET.get("page", 1)
     products = paginator.page(page_number)
 
     context = {"products": products}

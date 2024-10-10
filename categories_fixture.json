@@ -22,5 +22,21 @@
         "name": "Холодильники",
         "description": "Холодильники - восьмое чудо света"
     }
+},
+{
+    "model": "catalog.category",
+    "pk": 4,
+    "fields": {
+        "name": "Машины",
+        "description": "Средство передвижения"
+    }
+},
+{
+    "model": "catalog.category",
+    "pk": 5,
+    "fields": {
+        "name": "Кровати",
+        "description": "Мы спим 33% всей жизни!"
+    }
 }
 ]

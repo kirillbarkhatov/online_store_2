@@ -1,5 +1,6 @@
-from .models import Product
 from django.forms import ModelForm
+
+from .models import Product
 
 
 class ProductForm(ModelForm):
@@ -9,4 +10,4 @@ class ProductForm(ModelForm):
         # которой создается форма
         model = Product
         # Включаем все поля с модели в форму
-        fields = '__all__'
+        fields = "__all__"
