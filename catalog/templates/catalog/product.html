@@ -1,5 +1,7 @@
 {% extends 'catalog/base.html' %}
 
+{% load my_tags %}
+
 {% block title %}Продукт{% endblock %}
 
 {% block content %}
@@ -12,7 +14,7 @@
         <div class="col-12">
             <div class="card mb-4 box-shadow">
                 <div class="card-header">
-                    <img src="/media/{{ product.image }}" class="img-fluid">
+                    <img src="{{ product.image | media_filter}}" class="img-fluid">
                 </div>
                 <div class="card-body">
                     <h5 class="card-title">{{ product.name }}</h3>
