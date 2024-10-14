@@ -9,13 +9,13 @@
 <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
     <h1 class="display-4">Skystore</h1>
 
-    <a type="button" class="btn btn-lg btn-block btn-outline-primary" href="/add_product/">Добавить продукт</a>
+    <a type="button" class="btn btn-lg btn-block btn-outline-primary" href="{% url 'catalog:product_create' %}">Добавить продукт</a>
 </div>
 
 <div class="container">
     <div class="row text-center">
 
-        {% for product in products %}
+        {% for product in object_list %}
         <div class="col-4 d-flex">
             <div class="card mb-4 box-shadow w-100">
                 <div class="card-header">
@@ -28,7 +28,9 @@
                     <p>{{ product.description|truncatechars:100 }}</p>
 
                     <h3 class="card-title pricing-card-title">{{ product.price }}</h3>
-                    <a type="button" class="btn btn-lg btn-block btn-outline-primary" href="/product/{{ product.pk }}">Подробнее о товаре</a>
+                    <a type="button" class="btn btn-outline-primary" href="{% url 'catalog:product_detail' product.pk %}">Подробнее</a>
+                    <a type="button" class="btn btn-outline-primary" href="{% url 'catalog:product_update' product.pk %}">Изменить</a>
+                    <a type="button" class="btn btn-outline-danger" href="{% url 'catalog:product_delete' product.pk %}">Удалить</a>
                 </div>
             </div>
         </div>
@@ -36,7 +38,7 @@
 
     </div>
     <div class="col-12">
-    {% include "catalog/includes/inc_nav.html" with page_obj=products %}
+    {% include "catalog/includes/inc_nav.html" %}
     </div>
 </div>
 
