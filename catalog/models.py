@@ -26,7 +26,7 @@ class Product(models.Model):
     name = models.CharField(max_length=200, verbose_name="Наименование")
     description = models.TextField(verbose_name="Описание")
     image = models.ImageField(
-        upload_to="images/", null=True, blank=True, verbose_name="Изображение"
+        upload_to="images", null=True, blank=True, verbose_name="Изображение"
     )
     category = models.ForeignKey(
         Category,
@@ -34,6 +34,7 @@ class Product(models.Model):
         null=True,
         blank=True,
         related_name="products",
+        verbose_name="Категория",
     )
     price = models.DecimalField(
         max_digits=10, decimal_places=2, verbose_name="Цена в рублях"
