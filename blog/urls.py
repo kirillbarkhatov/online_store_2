@@ -11,10 +11,10 @@ app_name = BlogConfig.name
 urlpatterns = [
     path("", views.BlogEntryListView.as_view(), name="blogentry_list"),
     # path("contacts/", views.ContactsView.as_view(), name="contacts"),
-    # path("product/<int:pk>", views.ProductDetailView.as_view(), name="product_detail"),
-    # path("product/create", views.ProductCreateView.as_view(), name="product_create"),
-    # path("product/<int:pk>/update", views.ProductUpdateView.as_view(), name="product_update"),
-    # path("product/<int:pk>/delete", views.ProductDeleteView.as_view(), name="product_delete"),
+    path("<int:pk>", views.BlogEntryDetailView.as_view(), name="blogentry_detail"),
+    path("create", views.BlogEntryCreateView.as_view(), name="blogentry_create"),
+    path("<int:pk>/update", views.BlogEntryUpdateView.as_view(), name="blogentry_update"),
+    path("<int:pk>/delete", views.BlogEntryDeleteView.as_view(), name="blogentry_delete"),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

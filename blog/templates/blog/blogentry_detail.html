@@ -1,8 +1,8 @@
-{% extends 'blog/base.html' %}
+{% extends 'catalog/base.html' %}
 
 {% load my_tags %}
 
-{% block title %}Продукт{% endblock %}
+{% block title %}Запись{% endblock %}
 
 {% block content %}
 
@@ -14,16 +14,17 @@
         <div class="col-12">
             <div class="card mb-4 box-shadow">
                 <div class="card-header">
-                    <img src="{{ object.image | media_filter}}" class="img-fluid">
+                    <img src="{{ object.preview | media_filter}}" class="img-fluid">
                 </div>
                 <div class="card-body">
-                    <h5 class="card-title">{{ object.name }}</h5>
-                        <p>Категория: {{ object.category }}</p>
+                    <h5 class="card-title">{{ object.title }}</h5>
 
-                        <p>{{ object.description }}</p>
 
-                        <h3 class="card-title pricing-card-title">{{ object.price }}</h3>
-                        <button type="button" class="btn btn-lg btn-block btn-outline-primary">Купить</button>
+                        <p>{{ object.content }}</p>
+                        <p class="card-text"><small class="text-body-secondary">Количество просмотров - {{ object.view_count }}</small></p>
+                        <p class="card-text"><small class="text-body-secondary">Создан: {{ object.created_at }}</small></p>
+
+
                 </div>
             </div>
         </div>
