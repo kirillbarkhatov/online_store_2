@@ -17,13 +17,13 @@
     <div class="row">
 
         {% for blog_entry in object_list %}
+
         <div class="col-12">
 
             <div class="card mb-3">
                 <div class="row g-0">
                     <div class="card-header col-4">
-                        <img src="{{ blog_entry.preview | media_filter }}" class="img-fluid" style="object-fit: cover;"
-                             alt="...">
+                        <img src="{{ blog_entry.preview | media_filter }}" class="img-fluid" style="object-fit: cover;">
                     </div>
                     <div class="col-6">
                         <div class="card-body">
@@ -47,6 +47,7 @@
             </div>
 
         </div>
+
         {% endfor %}
 
     </div>
