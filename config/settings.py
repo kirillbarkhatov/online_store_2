@@ -123,6 +123,16 @@ USE_I18N = True
 USE_TZ = True
 
 
+# Настройки отправки почты
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.mail.ru'
+EMAIL_PORT = 465
+EMAIL_USE_SSL = True
+EMAIL_USE_TLS = False
+EMAIL_HOST_USER = 'barchatovkirill@mail.ru'
+EMAIL_HOST_PASSWORD = 'uLfGpDPzrpa0be4dqxeP'
+
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 

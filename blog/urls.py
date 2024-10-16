@@ -15,6 +15,7 @@ urlpatterns = [
     path("create", views.BlogEntryCreateView.as_view(), name="blogentry_create"),
     path("<int:pk>/update", views.BlogEntryUpdateView.as_view(), name="blogentry_update"),
     path("<int:pk>/delete", views.BlogEntryDeleteView.as_view(), name="blogentry_delete"),
+    path('send-email/', views.SendEmailView.as_view(), name='send_email'),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

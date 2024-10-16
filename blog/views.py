@@ -1,7 +1,9 @@
 from django.core.paginator import Paginator
 from django.http import HttpResponse
+from django.core.mail import send_mail
 from django.shortcuts import render
 from django.urls import reverse_lazy, reverse
+from django.views import View
 from django.views.generic import ListView, DetailView, TemplateView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
@@ -47,3 +49,28 @@ class BlogEntryDetailView(DetailView):
         self.object.view_count += 1
         self.object.save()
         return self.object
+
+
+# def send_email(request):
+#     subject = 'Hello from Django'
+#     message = 'Даааа, детка)'
+#     from_email = 'barchatovkirill@mail.ru'
+#     recipient_list = ['k.s.barkhatov@gmail.com']
+#
+#     send_mail(subject, message, from_email, recipient_list)
+#
+#     return HttpResponse("Email sent!")
+
+
+class SendEmailView(View):
+    def get(self, request):
+        subject = 'Hello from Django'
+        message = 'This is a test email sent from a Django application.'
+        from_email = 'barchatovkirill@mail.ru'
+        recipient_list = ['k.s.barkhatov@gmail.com']
+
+        try:
+            send_mail(subject, message, from_email, recipient_list)
+            return HttpResponse("Email sent successfully!")
+        except Exception as e:
+            return HttpResponse(f"Error: {str(e)}")
