@@ -1,15 +1,13 @@
-from django.core.paginator import Paginator
 from django.http import HttpResponse
-from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views.generic import ListView, DetailView, TemplateView
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.views.generic import DetailView, ListView, TemplateView
+from django.views.generic.edit import CreateView, DeleteView, UpdateView
 
 from catalog.forms import ProductForm
 from catalog.models import Contact, Product
 
-
 # Create your views here.
+
 
 class ProductCreateView(CreateView):
     # Модель куда выполняется сохранение
@@ -31,8 +29,6 @@ class ProductDeleteView(DeleteView):
     success_url = reverse_lazy("catalog:product_list")
 
 
-
-
 class ProductListView(ListView):
     model = Product
     paginate_by = 3
@@ -47,7 +43,6 @@ class ProductListView(ListView):
 
 class ProductDetailView(DetailView):
     model = Product
-
 
 
 class ContactsView(TemplateView):
@@ -68,7 +63,6 @@ class ContactsView(TemplateView):
         return HttpResponse(
             f"{name}, указанные Вами телефон и сообщение получены<br>Телефон: {phone}<br>Сообщение: {message}"
         )
-
 
 
 # переписано под CBV по рекомендациям урока

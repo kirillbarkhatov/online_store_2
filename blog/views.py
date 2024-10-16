@@ -1,11 +1,9 @@
-from django.core.paginator import Paginator
-from django.http import HttpResponse
 from django.core.mail import send_mail
-from django.shortcuts import render
-from django.urls import reverse_lazy, reverse
+from django.http import HttpResponse
+from django.urls import reverse, reverse_lazy
 from django.views import View
-from django.views.generic import ListView, DetailView, TemplateView
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.views.generic import DetailView, ListView
+from django.views.generic.edit import CreateView, DeleteView, UpdateView
 
 from blog.forms import BlogEntryForm
 from blog.models import BlogEntry
@@ -48,10 +46,10 @@ class BlogEntryDetailView(DetailView):
         self.object = super().get_object(queryset)
         self.object.view_count += 1
         if self.object.view_count == 100:
-            subject = f'{self.object.title} - Количество просмотров достигло 100!'
-            message = f'Поздравляю, статья {self.object.title} ОООЧЕНЬ популярна!!!'
-            from_email = 'barchatovkirill@mail.ru'
-            recipient_list = ['k.s.barkhatov@gmail.com']
+            subject = f"{self.object.title} - Количество просмотров достигло 100!"
+            message = f"Поздравляю, статья {self.object.title} ОООЧЕНЬ популярна!!!"
+            from_email = "barchatovkirill@mail.ru"
+            recipient_list = ["k.s.barkhatov@gmail.com"]
             send_mail(subject, message, from_email, recipient_list)
         self.object.save()
         return self.object
@@ -59,10 +57,10 @@ class BlogEntryDetailView(DetailView):
 
 class SendEmailView(View):
     def get(self, request):
-        subject = 'Hello from Django'
-        message = 'This is a test email sent from a Django application.'
-        from_email = 'barchatovkirill@mail.ru'
-        recipient_list = ['k.s.barkhatov@gmail.com']
+        subject = "Hello from Django"
+        message = "This is a test email sent from a Django application."
+        from_email = "barchatovkirill@mail.ru"
+        recipient_list = ["k.s.barkhatov@gmail.com"]
 
         try:
             send_mail(subject, message, from_email, recipient_list)

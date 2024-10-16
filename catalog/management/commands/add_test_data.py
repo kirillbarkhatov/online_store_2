@@ -1,8 +1,8 @@
 from django.core.management import call_command
 from django.core.management.base import BaseCommand
 
-from catalog.models import Category, Product
 from blog.models import BlogEntry
+from catalog.models import Category, Product
 
 
 class Command(BaseCommand):
@@ -20,5 +20,6 @@ class Command(BaseCommand):
         call_command("loaddata", "products_fixture.json", format="json")
         self.stdout.write(self.style.SUCCESS("Продукты загружены из фикстур успешно"))
         call_command("loaddata", "blogentry_fixture.json", format="json")
-        self.stdout.write(self.style.SUCCESS("Записи блога загружены из фикстур успешно"))
-
+        self.stdout.write(
+            self.style.SUCCESS("Записи блога загружены из фикстур успешно")
+        )

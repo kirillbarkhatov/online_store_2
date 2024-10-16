@@ -1,4 +1,5 @@
 from django.contrib import admin
+
 from .models import BlogEntry
 
 
@@ -13,12 +14,14 @@ class BlogEntryAdmin(admin.ModelAdmin):
         "created_at",
         "is_published",
         "view_count",
-
     )  # вывод колонок
-    search_fields = ("title", "content",)  # поиск по указанному полю/полям
+    search_fields = (
+        "title",
+        "content",
+    )  # поиск по указанному полю/полям
 
     def short_content(self, obj):
         # Обрезаем текст до 50 символов и добавляем '...' если он длиннее
-        return obj.content[:50] + '...' if len(obj.content) > 50 else obj.content
+        return obj.content[:50] + "..." if len(obj.content) > 50 else obj.content
 
-    short_content.short_description = 'content'  # Название колонки в админке
+    short_content.short_description = "content"  # Название колонки в админке
