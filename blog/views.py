@@ -47,19 +47,14 @@ class BlogEntryDetailView(DetailView):
     def get_object(self, queryset=None):
         self.object = super().get_object(queryset)
         self.object.view_count += 1
+        if self.object.view_count == 100:
+            subject = f'{self.object.title} - Количество просмотров достигло 100!'
+            message = f'Поздравляю, статья {self.object.title} ОООЧЕНЬ популярна!!!'
+            from_email = 'barchatovkirill@mail.ru'
+            recipient_list = ['k.s.barkhatov@gmail.com']
+            send_mail(subject, message, from_email, recipient_list)
         self.object.save()
         return self.object
-
-
-# def send_email(request):
-#     subject = 'Hello from Django'
-#     message = 'Даааа, детка)'
-#     from_email = 'barchatovkirill@mail.ru'
-#     recipient_list = ['k.s.barkhatov@gmail.com']
-#
-#     send_mail(subject, message, from_email, recipient_list)
-#
-#     return HttpResponse("Email sent!")
 
 
 class SendEmailView(View):
