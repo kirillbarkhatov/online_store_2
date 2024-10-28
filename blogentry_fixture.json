@@ -1,0 +1,62 @@
+[
+{
+    "model": "blog.blogentry",
+    "pk": 1,
+    "fields": {
+        "title": "Первая запись",
+        "content": "Содержимое первой записи_",
+        "preview": "blog/fbf17291e774624c7457c956431f7573.png.webp",
+        "created_at": "2024-10-14T22:01:58.335Z",
+        "is_published": true,
+        "view_count": 100
+    }
+},
+{
+    "model": "blog.blogentry",
+    "pk": 2,
+    "fields": {
+        "title": "Вторая запись!",
+        "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin et mauris ornare, maximus mi non, sagittis magna. Integer venenatis massa elit, sit amet aliquam augue sagittis nec. Donec consequat imperdiet vestibulum. Aenean luctus, nulla ut ullamcorper mattis, mauris dolor dictum sem, id sollicitudin est magna id eros. Pellentesque volutpat volutpat justo tincidunt condimentum. Suspendisse rhoncus fermentum dignissim. Donec efficitur orci quis odio accumsan rhoncus. Donec pellentesque condimentum eros, at volutpat nibh aliquet sit amet. Donec mollis in ipsum non tristique. Phasellus ut sem non enim accumsan pellentesque. Aliquam dictum est libero, nec tincidunt tellus consequat sit amet. Suspendisse porttitor bibendum nisi ut pretium. Ut nec velit elit. Nam interdum fringilla urna efficitur ornare. Aliquam erat volutpat. Maecenas vitae tortor in neque tristique cursus et eget velit.\r\n\r\nEtiam ut bibendum ante, ac feugiat magna. Nam ac lectus purus. Curabitur tempor non elit eget iaculis. Vivamus vitae eleifend tortor. Nam convallis facilisis massa in elementum. Nunc porttitor nulla sollicitudin arcu hendrerit, in blandit erat feugiat. Vivamus eget dignissim arcu. Nam venenatis euismod massa eu imperdiet. Cras efficitur molestie dictum. Proin semper finibus lectus id venenatis. Vestibulum finibus, erat placerat congue fringilla, elit libero feugiat ex, et iaculis leo elit et ante.\r\n\r\nNunc egestas felis ut ultricies eleifend. Mauris quis elit scelerisque, ultrices nunc at, molestie turpis. Donec in ligula sollicitudin, mollis felis a, eleifend tellus. Curabitur ac mauris nec velit vehicula suscipit. Nunc sed commodo orci, et pretium ligula. Curabitur fermentum libero eget enim aliquam placerat. Phasellus porta at mi eget vulputate. Sed sit amet lacus at diam semper varius. Vivamus tincidunt turpis quis luctus vulputate.\r\n\r\nEtiam eu lacinia enim. Fusce a scelerisque sapien, vel vulputate velit. Cras finibus nulla rutrum massa dictum suscipit. Phasellus nec posuere tortor, id fermentum augue. Quisque iaculis quis urna eu hendrerit. Aenean ornare eros quis velit lobortis auctor. Sed elementum ac lacus et tempor. Mauris ornare sollicitudin lobortis. Phasellus posuere sollicitudin libero, eget aliquam urna tempor ac. Donec eu tellus libero. Ut rutrum ex eget nisl scelerisque, quis euismod est vulputate.\r\n\r\nPhasellus eu accumsan tortor. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Aliquam ac erat placerat, maximus felis vel, consectetur urna. Fusce elementum nulla eget magna fermentum, quis convallis risus pellentesque. Sed feugiat dolor in est dictum, et euismod lectus dapibus. Nulla venenatis, mi imperdiet mollis vulputate, lacus arcu ultricies nunc, a placerat diam massa vel est. Pellentesque ac leo quis ipsum maximus finibus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Etiam a arcu nisi. Nulla semper libero ut arcu maximus, et vestibulum lectus finibus. Cras velit urna, porttitor eget finibus ut, tempus vitae sem. Mauris quam augue, pretium quis augue at, semper finibus enim. Aliquam in nibh leo. Etiam faucibus, nibh eu laoreet mollis, magna enim pulvinar urna, id tincidunt ex diam et erat. Duis ornare quam sed pharetra vehicula.",
+        "preview": "blog/maxresdefault_5.jpg",
+        "created_at": "2024-10-14T22:03:41.045Z",
+        "is_published": true,
+        "view_count": 3
+    }
+},
+{
+    "model": "blog.blogentry",
+    "pk": 4,
+    "fields": {
+        "title": "argare",
+        "content": "gaergaergaer",
+        "preview": "",
+        "created_at": "2024-10-15T19:56:52.234Z",
+        "is_published": false,
+        "view_count": 24
+    }
+},
+{
+    "model": "blog.blogentry",
+    "pk": 5,
+    "fields": {
+        "title": "fujfykjyf",
+        "content": "ukyfukyukyurkuuuuuuuukyfukyukyurkuuuuuuuukyfukyukyurkuuuuuuuukyfukyukyurkuuuuuuuukyfukyukyurkuuuuuuuukyfukyukyurkuuuuuuuukyfukyukyurkuuuuuuuukyfukyukyurkuuuuuuuukyfukyukyurkuuuuuuuukyfukyukyurkuuuuuuuukyfukyukyurkuuuuuuuukyfukyukyurkuuuuuuuukyfukyukyurkuuuuuuuukyfukyukyurkuuuuuuuukyfukyukyurkuuuuuuuukyfukyukyurkuuuuuuu",
+        "preview": "blog/c7746654406565828ad2810308e2050f.png.webp",
+        "created_at": "2024-10-15T20:05:31.776Z",
+        "is_published": false,
+        "view_count": 5
+    }
+},
+{
+    "model": "blog.blogentry",
+    "pk": 6,
+    "fields": {
+        "title": "awerfgrthgertyh",
+        "content": "wrthgwqtrhrtuyjryujketshetyjkyuj",
+        "preview": "",
+        "created_at": "2024-10-15T20:10:09.056Z",
+        "is_published": false,
+        "view_count": 0
+    }
+}
+]
