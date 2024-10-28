@@ -17,6 +17,8 @@ class StyleFormMixin:
 
 class ProductForm(StyleFormMixin, ModelForm):
 
+    banned_words = ["казино", "криптовалюта", "крипта", "биржа", "дешево", "бесплатно", "обман", "полиция", "радар"]
+
     class Meta:
         # Название модели на основе
         # которой создается форма
@@ -24,17 +26,19 @@ class ProductForm(StyleFormMixin, ModelForm):
         # Включаем все поля с модели в форму
         fields = "__all__"
 
-    def clean(self):
-        # валидация данных нескольких полей
-        cleaned_data = super().clean()
-        name = cleaned_data.get("name")
-        description = cleaned_data.get("description")
-        banned_words = ["казино", "криптовалюта", "крипта", "биржа", "дешево", "бесплатно", "обман", "полиция", "радар"]
+    def clean_name(self):
+        name = self.cleaned_data.get("name")
+        for banned_word in self.banned_words:
+            if banned_word in name.lower():
+                raise ValidationError(f'Слово "{banned_word}" недопустимо в имени товара')
+        return name
 
-        for banned_word in banned_words:
-            if banned_word in name.lower() or banned_word in description.lower():
-                raise ValidationError(f'Слово "{banned_word}" недопустимо в имени или описании товара')
-        return cleaned_data
+    def clean_description(self):
+        description = self.cleaned_data.get("description")
+        for banned_word in self.banned_words:
+            if banned_word in description.lower():
+                raise ValidationError(f'Слово "{banned_word}" недопустимо в описании товара')
+        return description
 
     def clean_price(self):
         # валидация данных в поле price
