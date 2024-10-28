@@ -1,6 +1,6 @@
-from django.forms.fields import BooleanField
-from django.forms import ModelForm
 from django.core.exceptions import ValidationError
+from django.forms import ModelForm
+from django.forms.fields import BooleanField
 
 from .models import Product
 
@@ -17,7 +17,17 @@ class StyleFormMixin:
 
 class ProductForm(StyleFormMixin, ModelForm):
 
-    banned_words = ["казино", "криптовалюта", "крипта", "биржа", "дешево", "бесплатно", "обман", "полиция", "радар"]
+    banned_words = [
+        "казино",
+        "криптовалюта",
+        "крипта",
+        "биржа",
+        "дешево",
+        "бесплатно",
+        "обман",
+        "полиция",
+        "радар",
+    ]
 
     class Meta:
         # Название модели на основе
@@ -30,14 +40,18 @@ class ProductForm(StyleFormMixin, ModelForm):
         name = self.cleaned_data.get("name")
         for banned_word in self.banned_words:
             if banned_word in name.lower():
-                raise ValidationError(f'Слово "{banned_word}" недопустимо в имени товара')
+                raise ValidationError(
+                    f'Слово "{banned_word}" недопустимо в имени товара'
+                )
         return name
 
     def clean_description(self):
         description = self.cleaned_data.get("description")
         for banned_word in self.banned_words:
             if banned_word in description.lower():
-                raise ValidationError(f'Слово "{banned_word}" недопустимо в описании товара')
+                raise ValidationError(
+                    f'Слово "{banned_word}" недопустимо в описании товара'
+                )
         return description
 
     def clean_price(self):
@@ -48,14 +62,18 @@ class ProductForm(StyleFormMixin, ModelForm):
         return price
 
     def clean_image(self):
-        image = self.cleaned_data.get('image')
+        image = self.cleaned_data.get("image")
         if image:
             # Проверка формата
-            if not (image.name.lower().endswith('.jpg') or image.name.lower().endswith('.jpeg') or image.name.lower().endswith('.png')):
-                raise ValidationError('Только JPEG и PNG файлы разрешены.')
+            if not (
+                image.name.lower().endswith(".jpg")
+                or image.name.lower().endswith(".jpeg")
+                or image.name.lower().endswith(".png")
+            ):
+                raise ValidationError("Только JPEG и PNG файлы разрешены.")
 
             # Проверка размера файла
             if image.size > 5 * 1024 * 1024:  # 5 МБ в байтах
-                raise ValidationError('Размер файла не должен превышать 5 МБ.')
+                raise ValidationError("Размер файла не должен превышать 5 МБ.")
 
         return image

@@ -1,7 +1,8 @@
 from django.forms import ModelForm
 
-from .models import BlogEntry
 from catalog.forms import StyleFormMixin
+
+from .models import BlogEntry
 
 
 class BlogEntryForm(StyleFormMixin, ModelForm):
