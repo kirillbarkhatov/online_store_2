@@ -42,3 +42,16 @@ class ProductForm(StyleFormMixin, ModelForm):
         if price < 0:
             raise ValidationError("Цена не может быть отрицательной")
         return price
+
+    def clean_image(self):
+        image = self.cleaned_data.get('image')
+        if image:
+            # Проверка формата
+            if not (image.name.lower().endswith('.jpg') or image.name.lower().endswith('.jpeg') or image.name.lower().endswith('.png')):
+                raise ValidationError('Только JPEG и PNG файлы разрешены.')
+
+            # Проверка размера файла
+            if image.size > 5 * 1024 * 1024:  # 5 МБ в байтах
+                raise ValidationError('Размер файла не должен превышать 5 МБ.')
+
+        return image
