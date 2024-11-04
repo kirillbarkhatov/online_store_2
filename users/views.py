@@ -1,7 +1,8 @@
-from django.contrib.auth.models import AbstractUser
-from django.db import models
+from django.urls import reverse_lazy
+from django.views.generic.edit import CreateView
+from .forms import CustomUserCreationForm
 
-class CustomUser(AbstractUser):
-    """Кастомная модель пользователя"""
 
-    email =
+class RegisterView(CreateView):
+    form_class = CustomUserCreationForm
+    template_name = "registration/register.html"
