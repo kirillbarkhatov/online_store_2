@@ -1,3 +1,7 @@
-from django.shortcuts import render
+from django.contrib.auth.models import AbstractUser
+from django.db import models
 
-# Create your views here.
+class CustomUser(AbstractUser):
+    """Кастомная модель пользователя"""
+
+    email =
