@@ -12,6 +12,8 @@ class CustomUser(AbstractUser):
     # прикрутить django-countries
     country = models.CharField(max_length=50, blank=True, null=True, verbose_name="Страна")
 
+    token = models.CharField(max_length=100,verbose_name="Токен", blank=True, null=True)
+
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
 

@@ -7,6 +7,7 @@ from django.views.generic.edit import CreateView, DeleteView, UpdateView
 
 from blog.forms import BlogEntryForm
 from blog.models import BlogEntry
+from config.settings import DEFAULT_FROM_EMAIL
 
 
 class BlogEntryListView(ListView):
@@ -48,7 +49,7 @@ class BlogEntryDetailView(DetailView):
         if self.object.view_count == 100:
             subject = f"{self.object.title} - Количество просмотров достигло 100!"
             message = f"Поздравляю, статья {self.object.title} ОООЧЕНЬ популярна!!!"
-            from_email = "barchatovkirill@mail.ru"
+            from_email = DEFAULT_FROM_EMAIL
             recipient_list = ["k.s.barkhatov@gmail.com"]
             send_mail(subject, message, from_email, recipient_list)
         self.object.save()
@@ -59,7 +60,7 @@ class SendEmailView(View):
     def get(self, request):
         subject = "Hello from Django"
         message = "This is a test email sent from a Django application."
-        from_email = "barchatovkirill@mail.ru"
+        from_email = DEFAULT_FROM_EMAIL
         recipient_list = ["k.s.barkhatov@gmail.com"]
 
         try:

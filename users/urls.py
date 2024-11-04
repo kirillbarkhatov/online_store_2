@@ -13,6 +13,7 @@ urlpatterns = [
     path("login/", LoginView.as_view(), name="login"),
     path("logout/", LogoutView.as_view(next_page="catalog:product_list"), name="logout"),
     path("register/", views.RegisterView.as_view(), name="register"),
+    path("email-confirm/<str:token>/", views.email_verification, name="email-confirm"),
 
 ]
 if settings.DEBUG:
