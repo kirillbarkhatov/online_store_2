@@ -4,20 +4,21 @@ from django.urls import reverse, reverse_lazy
 from django.views import View
 from django.views.generic import DetailView, ListView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from blog.forms import BlogEntryForm
 from blog.models import BlogEntry
 from config.settings import DEFAULT_FROM_EMAIL
 
 
-class BlogEntryListView(ListView):
+class BlogEntryListView(LoginRequiredMixin, ListView):
     model = BlogEntry
 
     def get_queryset(self):
         return super().get_queryset().filter(is_published=True)
 
 
-class BlogEntryCreateView(CreateView):
+class BlogEntryCreateView(LoginRequiredMixin, CreateView):
     # Модель куда выполняется сохранение
     model = BlogEntry
     # Класс на основе которого будет валидация полей
@@ -26,7 +27,7 @@ class BlogEntryCreateView(CreateView):
     success_url = reverse_lazy("blog:blogentry_list")
 
 
-class BlogEntryUpdateView(UpdateView):
+class BlogEntryUpdateView(LoginRequiredMixin, UpdateView):
     model = BlogEntry
     form_class = BlogEntryForm
     success_url = reverse_lazy("blog:blogentry_list")
@@ -35,12 +36,12 @@ class BlogEntryUpdateView(UpdateView):
         return reverse("blog:blogentry_detail", args=[self.kwargs.get("pk")])
 
 
-class BlogEntryDeleteView(DeleteView):
+class BlogEntryDeleteView(LoginRequiredMixin, DeleteView):
     model = BlogEntry
     success_url = reverse_lazy("blog:blogentry_list")
 
 
-class BlogEntryDetailView(DetailView):
+class BlogEntryDetailView(LoginRequiredMixin, DetailView):
     model = BlogEntry
 
     def get_object(self, queryset=None):
@@ -56,7 +57,7 @@ class BlogEntryDetailView(DetailView):
         return self.object
 
 
-class SendEmailView(View):
+class SendEmailView(LoginRequiredMixin, View):
     def get(self, request):
         subject = "Hello from Django"
         message = "This is a test email sent from a Django application."
