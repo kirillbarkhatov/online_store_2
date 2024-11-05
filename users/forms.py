@@ -34,7 +34,7 @@ class CustomUserUpdateForm(StyleFormMixin, UserChangeForm):
 
     class Meta:
         model = CustomUser
-        fields = ["email", "avatar", "country"]
+        fields = ["avatar", "country"]
 
 # User = get_user_model()
 
