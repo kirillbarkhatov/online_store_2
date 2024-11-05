@@ -13,11 +13,14 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 import os
 from pathlib import Path
 
-from django.conf.global_settings import DEFAULT_FROM_EMAIL, SERVER_EMAIL, LOGIN_REDIRECT_URL, LOGOUT_REDIRECT_URL, \
-    LOGIN_URL
+from django.conf.global_settings import (
+    DEFAULT_FROM_EMAIL,
+    LOGIN_REDIRECT_URL,
+    LOGIN_URL,
+    LOGOUT_REDIRECT_URL,
+    SERVER_EMAIL,
+)
 from dotenv import load_dotenv
-
-
 
 load_dotenv(override=True)
 
@@ -155,7 +158,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-AUTH_USER_MODEL = 'users.CustomUser'
+AUTH_USER_MODEL = "users.CustomUser"
 
 LOGIN_REDIRECT_URL = "catalog:product_list"
 LOGOUT_REDIRECT_URL = "catalog:product_list"

@@ -1,15 +1,12 @@
-from django import forms
-from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm, UserChangeForm
-from .models import CustomUser
+from django.contrib.auth.forms import UserChangeForm, UserCreationForm
+
 from catalog.forms import StyleFormMixin
 
-from django.contrib.auth import get_user_model
-from django.core.exceptions import ValidationError
+from .models import CustomUser
 
 
 class CustomUserCreationForm(StyleFormMixin, UserCreationForm):
     """Кастомная форма для создания пользователя"""
-
 
     class Meta:
         model = CustomUser
@@ -17,17 +14,19 @@ class CustomUserCreationForm(StyleFormMixin, UserCreationForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['password1'].label = "Ваш пароль"  # Меняем label для password1
-        self.fields['password2'].label = "Повторите пароль"  # Меняем label для password2
+        self.fields["password1"].label = "Ваш пароль"  # Меняем label для password1
+        self.fields["password2"].label = (
+            "Повторите пароль"  # Меняем label для password2
+        )
 
-        self.fields['password1'].help_text = (
-                    "- Ваш пароль не должен быть слишком похож на другую личную информацию.<br>"
-                    "- Ваш пароль должен содержать как минимум 8 символов.<br>"
-                    "- Ваш пароль не должен быть распространённым.<br>"
-                    "- Ваш пароль не должен состоять только из цифр."
-                )
+        self.fields["password1"].help_text = (
+            "- Ваш пароль не должен быть слишком похож на другую личную информацию.<br>"
+            "- Ваш пароль должен содержать как минимум 8 символов.<br>"
+            "- Ваш пароль не должен быть распространённым.<br>"
+            "- Ваш пароль не должен состоять только из цифр."
+        )
 
-        self.fields['password2'].help_text = "Введите тот же пароль для подтверждения."
+        self.fields["password2"].help_text = "Введите тот же пароль для подтверждения."
 
 
 class CustomUserUpdateForm(StyleFormMixin, UserChangeForm):
@@ -35,6 +34,7 @@ class CustomUserUpdateForm(StyleFormMixin, UserChangeForm):
     class Meta:
         model = CustomUser
         fields = ["avatar", "country"]
+
 
 # User = get_user_model()
 
