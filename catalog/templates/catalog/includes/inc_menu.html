@@ -13,7 +13,9 @@
             <form method="post" action="{% url 'users:logout' %}">
                 {% csrf_token %}
                 <button type="submit" class="p-2 btn btn-outline-primary">Выйти</button>
+                <a class="p-2 btn btn-outline-primary" href="{% url 'users:edit-profile' %}">Редактировать пользователя</a>
             </form>
+
             {% else %}
             <a class="p-2 btn btn-outline-primary" href="{% url 'users:login' %}">Войти</a>
             <a class="p-2 btn btn-outline-primary" href="{% url 'users:register' %}">Регистрация</a>
