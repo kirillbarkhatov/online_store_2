@@ -10,6 +10,7 @@ app_name = BlogConfig.name
 
 urlpatterns = [
     path("", views.BlogEntryListView.as_view(), name="blogentry_list"),
+    path("all-entries", views.AllBlogEntryListView.as_view(), name="all_blogentry_list"),
     # path("contacts/", views.ContactsView.as_view(), name="contacts"),
     path("<int:pk>", views.BlogEntryDetailView.as_view(), name="blogentry_detail"),
     path("create", views.BlogEntryCreateView.as_view(), name="blogentry_create"),
@@ -18,6 +19,9 @@ urlpatterns = [
     ),
     path(
         "<int:pk>/delete", views.BlogEntryDeleteView.as_view(), name="blogentry_delete"
+    ),
+    path(
+        "<int:pk>/unpublish", views.BlogEntryUnpublishView.as_view(), name="blogentry_unpublish"
     ),
     path("send-email/", views.SendEmailView.as_view(), name="send_email"),
 ]

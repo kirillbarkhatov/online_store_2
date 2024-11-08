@@ -1,5 +1,6 @@
 from unicodedata import category
 
+from IPython.core.release import author
 from django.core.management import call_command
 from django.core.management.base import BaseCommand
 
@@ -32,11 +33,17 @@ class Command(BaseCommand):
 
         # распределяем владельцев
         smartphones = Product.objects.filter(category=1)
+        blog_entries = BlogEntry.objects.all()
         smartphones_owner = CustomUser.objects.get(email="test1@test1.ru")
         smartphones.update(owner=smartphones_owner)
+        blog_entries.update(author=smartphones_owner)
 
         self.stdout.write(
             self.style.SUCCESS(f"Владельцем продуктов категории Смартфоны назначен пользователь {smartphones_owner.email}")
+        )
+        self.stdout.write(
+            self.style.SUCCESS(
+                f"Автором всех записей в блоге назначен пользователь {smartphones_owner.email}")
         )
 
         other_products = Product.objects.exclude(category=1)

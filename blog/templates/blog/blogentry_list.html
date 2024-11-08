@@ -11,6 +11,15 @@
 
     <a type="button" class="btn btn-lg btn-block btn-outline-primary" href="{% url 'blog:blogentry_create' %}">Добавить
         запись</a>
+
+    {% if is_content_manager %}
+    {{ objects }}
+    <a class="btn btn-lg btn-block btn-outline-primary" href="{% url 'blog:all_blogentry_list' %}">Управлять
+        публикациями</a>
+    {% else %}
+    <a class="btn btn-lg btn-block btn-outline-primary" href="#">МОИ ЗАПИСИ В БЛОГЕ</a>
+    {% endif %}
+
 </div>
 
 <div class="container">
@@ -29,8 +38,12 @@
                         <div class="card-body">
                             <h5 class="card-title">{{ blog_entry.title }}</h5>
                             <p class="card-text">{{ blog_entry.content|truncatechars:100 }}</p>
-                            <p class="card-text"><small class="text-body-secondary">Количество просмотров - {{ blog_entry.view_count }}</small></p>
-                            <p class="card-text"><small class="text-body-secondary">Создан: {{ blog_entry.created_at }}</small></p>
+                            <p class="card-text"><small class="text-body-secondary">Количество просмотров - {{
+                                blog_entry.view_count }}</small></p>
+                            <p class="card-text"><small class="text-body-secondary">Создан: {{ blog_entry.created_at
+                                }}</small></p>
+                            <p class="card-text"><small class="text-body-secondary">Автор: {{ blog_entry.author
+                                }}</small></p>
                         </div>
                     </div>
                     <div class="col-2">
@@ -41,6 +54,12 @@
                                href="{% url 'blog:blogentry_update' blog_entry.pk %}">Изменить</a>
                             <a type="button" class="btn btn-outline-danger"
                                href="{% url 'blog:blogentry_delete' blog_entry.pk %}">Удалить</a>
+                            {% if is_content_manager %}
+                            <form action="{% url 'blog:blogentry_unpublish' blog_entry.pk %}" method="post">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-outline-danger btn-sm">Снять с публикации</button>
+                            </form>
+                            {% endif %}
                         </div>
                     </div>
                 </div>

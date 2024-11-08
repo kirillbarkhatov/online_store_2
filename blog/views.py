@@ -1,6 +1,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.mail import send_mail
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseForbidden
+from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse, reverse_lazy
 from django.views import View
 from django.views.generic import DetailView, ListView
@@ -16,6 +17,42 @@ class BlogEntryListView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         return super().get_queryset().filter(is_published=True)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        # Проверка, состоит ли пользователь в группе "Модератор продуктов"
+        is_content_manager = self.request.user.groups.filter(name="Контент-менеджер").exists()
+
+        # Добавляем в контекст информацию, что пользователь является модератором
+        context['is_content_manager'] = is_content_manager
+        return context
+
+
+class AllBlogEntryListView(LoginRequiredMixin, ListView):
+    model = BlogEntry
+    template_name = "blog/blogentry_list.html"
+
+    def dispatch(self, request, *args, **kwargs):
+
+        # Проверка, состоит ли пользователь в группе "Контент-менеджер"
+        is_content_manager = self.request.user.groups.filter(name="Контент-менеджер").exists()
+
+        if is_content_manager:
+            return super().dispatch(request, *args, **kwargs)
+
+        return HttpResponseForbidden("У вас нет доступа к этой странице.")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        # Проверка, состоит ли пользователь в группе "Модератор продуктов"
+        is_content_manager = self.request.user.groups.filter(name="Контент-менеджер").exists()
+
+        # Добавляем в контекст информацию, что пользователь является модератором
+        context['is_content_manager'] = is_content_manager
+        print(context)
+        return context
 
 
 class BlogEntryCreateView(LoginRequiredMixin, CreateView):
@@ -69,3 +106,31 @@ class SendEmailView(LoginRequiredMixin, View):
             return HttpResponse("Email sent successfully!")
         except Exception as e:
             return HttpResponse(f"Error: {str(e)}")
+
+
+class BlogEntryUnpublishView(LoginRequiredMixin, View):
+    def post(self, request, pk):
+        blog_entry = get_object_or_404(BlogEntry, pk=pk)
+
+        if not request.user.has_perm("blog.can_unpublish_blogentry"):
+            return HttpResponseForbidden("У вас нет прав для снятия записи с публикации")
+
+        # Логика снятия с публикации
+        blog_entry.is_published = False
+        blog_entry.save()
+
+        return redirect("blog:all_blogentry_list")
+
+
+class BlogEntryPublishView(LoginRequiredMixin, View):
+    def post(self, request, pk):
+        blog_entry = get_object_or_404(BlogEntry, pk=pk)
+
+        if not request.user.has_perm("blog.can_unpublish_blogentry"):
+            return HttpResponseForbidden("У вас нет прав для публикации этой записи")
+
+        # Логика снятия с публикации
+        blog_entry.is_published = True
+        blog_entry.save()
+
+        return redirect("blog:all_blogentry_list")
