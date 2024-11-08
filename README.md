@@ -44,6 +44,9 @@
 `_Раздел дорабатывается_`
 Реализована авторизация
 
+Команда для создания фикстур `python3 -Xutf8 manage.py dumpdata catalog.Product --output products_fixture.json --indent 4`
+
+
 ## Тестирование:
 
 `_Раздел дорабатывается_`

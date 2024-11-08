@@ -35,6 +35,7 @@ class ProductForm(StyleFormMixin, ModelForm):
         model = Product
         # Включаем все поля с модели в форму
         fields = "__all__"
+        exclude = ("owner",)
 
     def clean_name(self):
         name = self.cleaned_data.get("name")
