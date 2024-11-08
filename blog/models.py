@@ -25,3 +25,6 @@ class BlogEntry(models.Model):
         ordering = [
             "created_at",
         ]
+        permissions = [
+            ("can_unpublish_blogentry", "Can unpublish blogentry"),
+        ]

@@ -10,6 +10,8 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
 
+        User = get_user_model()
+
         try:
             group = Group.objects.get(name="Модератор продуктов")
         except ObjectDoesNotExist:
@@ -22,15 +24,12 @@ class Command(BaseCommand):
                 self.style.SUCCESS(f"Успешно создана группа {group.name} c правами \"{unpublish_product_permission}\" и \"{delete_product_permission}\"")
             )
 
-        User = get_user_model()
-
         # создание модератора
         try:
             user = User.objects.get(email="moderator@moderator.ru").delete()
 
         except ObjectDoesNotExist:
             pass
-
 
         user = User.objects.create(
             email="moderator@moderator.ru",
@@ -39,7 +38,38 @@ class Command(BaseCommand):
         user.groups.add(group)
         user.save()
         self.stdout.write(
-            self.style.SUCCESS(f"Успешно создан модератор с email {user.email} с паролем 123qwe456rty и добавлен в группу {group.name}")
+            self.style.SUCCESS(
+                f"Успешно создан модератор с email {user.email} с паролем 123qwe456rty и добавлен в группу {group.name}")
+        )
+
+        try:
+            group = Group.objects.get(name="Контент-менеджер")
+        except ObjectDoesNotExist:
+            group = Group.objects.create(name="Контент-менеджер")
+            unpublish_blogentry_permission = Permission.objects.get(codename="can_unpublish_blogentry")
+            delete_blogentry_permission = Permission.objects.get(codename="delete_blogentry")
+            group.permissions.add(unpublish_blogentry_permission, delete_blogentry_permission)
+            group.save()
+            self.stdout.write(
+                self.style.SUCCESS(f"Успешно создана группа {group.name} c правами \"{unpublish_blogentry_permission}\" и \"{delete_blogentry_permission}\"")
+            )
+
+        # создание контент-менеджера
+        try:
+            user = User.objects.get(email="content@manager.ru").delete()
+
+        except ObjectDoesNotExist:
+            pass
+
+        user = User.objects.create(
+            email="content@manager.ru",
+        )
+        user.set_password("123qwe456rty")
+        user.groups.add(group)
+        user.save()
+        self.stdout.write(
+            self.style.SUCCESS(
+                f"Успешно создан контент-менеджер с email {user.email} с паролем 123qwe456rty и добавлен в группу {group.name}")
         )
 
         # создание тестового юзера №1
@@ -59,7 +89,7 @@ class Command(BaseCommand):
             self.style.SUCCESS(f"Успешно создан тестовый пользователь с email {user.email} с паролем 123qwe456rty ")
         )
 
-        # создание тестового юзера №1
+        # создание тестового юзера №2
         try:
             user = User.objects.get(email="test2@test2.ru").delete()
 
