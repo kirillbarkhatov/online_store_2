@@ -1,7 +1,10 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import HttpResponse
+from itertools import product, filterfalse
+
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.http import HttpResponse, HttpResponseForbidden
+from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
-from django.views.generic import DetailView, ListView, TemplateView
+from django.views.generic import DetailView, ListView, TemplateView, View
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 
 from catalog.forms import ProductForm
@@ -32,9 +35,19 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
     success_url = reverse_lazy("catalog:product_list")
 
 
+
 class ProductDeleteView(LoginRequiredMixin, DeleteView):
     model = Product
     success_url = reverse_lazy("catalog:product_list")
+
+    def dispatch(self, request, *args, **kwargs):
+        # Получаем объект продукта
+        product = super().get_object()
+        # Проверяем, является ли текущий пользователь владельцем продукта
+        if product.owner == self.request.user or request.user.has_perm('catalog.delete_product'):
+            return super().dispatch(request, *args, **kwargs)
+
+        return HttpResponseForbidden("Вы не можете удалить этот продукт.")
 
 
 class ProductListView(ListView):
@@ -46,11 +59,48 @@ class ProductListView(ListView):
         products = Product.objects.all().order_by("-created_at")[:5]
         for product in products:
             print(product.name)
-        return Product.objects.all()
+
+        return Product.objects.filter(is_published=True)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        # Проверка, состоит ли пользователь в группе "Модератор продуктов"
+        is_moderator = self.request.user.groups.filter(name="Модератор продуктов").exists()
+
+        # Добавляем в контекст информацию, что пользователь является модератором
+        context['is_moderator'] = is_moderator
+        return context
+
+
+class UserProductListView(ListView):
+    model = Product
+    paginate_by = 3
+    template_name = "catalog/product_list.html"
+
+    def get_queryset(self):
+        # в теле класса не работает вывод в консоль - только так
+        user = self.request.user
+
+        return Product.objects.filter(owner=user.id)
 
 
 class ProductDetailView(LoginRequiredMixin, DetailView):
     model = Product
+
+
+class ProductUnpublishView(LoginRequiredMixin, View):
+    def post(self, request, pk):
+        product = get_object_or_404(Product, pk=pk)
+
+        if not request.user.has_perm("catalog.can_unpublish_product"):
+            return HttpResponseForbidden("У вас нет прав для снятия продукта с публикации")
+
+        # Логика снятия с публикации
+        product.is_published = False
+        product.save()
+
+        return redirect("catalog:product_list")
 
 
 class ContactsView(LoginRequiredMixin, TemplateView):

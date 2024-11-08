@@ -12,6 +12,7 @@
             {% if user.is_authenticated %}
             <form method="post" action="{% url 'users:logout' %}">
                 {% csrf_token %}
+                <a class="p-2 btn btn-outline-primary" href="/my-products/">МОИ ПРОДУКТЫ</a>
                 <button type="submit" class="p-2 btn btn-outline-primary">Выйти</button>
                 <a class="p-2 btn btn-outline-primary" href="{% url 'users:edit-profile' %}">Редактировать пользователя</a>
             </form>
