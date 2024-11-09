@@ -1,8 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group, Permission
-from django.core.management.base import BaseCommand
 from django.core.exceptions import ObjectDoesNotExist
-
+from django.core.management.base import BaseCommand
 
 
 class Command(BaseCommand):
@@ -16,12 +15,20 @@ class Command(BaseCommand):
             group = Group.objects.get(name="Модератор продуктов")
         except ObjectDoesNotExist:
             group = Group.objects.create(name="Модератор продуктов")
-            unpublish_product_permission = Permission.objects.get(codename="can_unpublish_product")
-            delete_product_permission = Permission.objects.get(codename="delete_product")
-            group.permissions.add(unpublish_product_permission, delete_product_permission)
+            unpublish_product_permission = Permission.objects.get(
+                codename="can_unpublish_product"
+            )
+            delete_product_permission = Permission.objects.get(
+                codename="delete_product"
+            )
+            group.permissions.add(
+                unpublish_product_permission, delete_product_permission
+            )
             group.save()
             self.stdout.write(
-                self.style.SUCCESS(f"Успешно создана группа {group.name} c правами \"{unpublish_product_permission}\" и \"{delete_product_permission}\"")
+                self.style.SUCCESS(
+                    f'Успешно создана группа {group.name} c правами "{unpublish_product_permission}" и "{delete_product_permission}"'
+                )
             )
 
         # создание модератора
@@ -39,19 +46,28 @@ class Command(BaseCommand):
         user.save()
         self.stdout.write(
             self.style.SUCCESS(
-                f"Успешно создан модератор с email {user.email} с паролем 123qwe456rty и добавлен в группу {group.name}")
+                f"Успешно создан модератор с email {user.email} с паролем 123qwe456rty и добавлен в группу {group.name}"
+            )
         )
 
         try:
             group = Group.objects.get(name="Контент-менеджер")
         except ObjectDoesNotExist:
             group = Group.objects.create(name="Контент-менеджер")
-            unpublish_blogentry_permission = Permission.objects.get(codename="can_unpublish_blogentry")
-            delete_blogentry_permission = Permission.objects.get(codename="delete_blogentry")
-            group.permissions.add(unpublish_blogentry_permission, delete_blogentry_permission)
+            unpublish_blogentry_permission = Permission.objects.get(
+                codename="can_unpublish_blogentry"
+            )
+            delete_blogentry_permission = Permission.objects.get(
+                codename="delete_blogentry"
+            )
+            group.permissions.add(
+                unpublish_blogentry_permission, delete_blogentry_permission
+            )
             group.save()
             self.stdout.write(
-                self.style.SUCCESS(f"Успешно создана группа {group.name} c правами \"{unpublish_blogentry_permission}\" и \"{delete_blogentry_permission}\"")
+                self.style.SUCCESS(
+                    f'Успешно создана группа {group.name} c правами "{unpublish_blogentry_permission}" и "{delete_blogentry_permission}"'
+                )
             )
 
         # создание контент-менеджера
@@ -69,7 +85,8 @@ class Command(BaseCommand):
         user.save()
         self.stdout.write(
             self.style.SUCCESS(
-                f"Успешно создан контент-менеджер с email {user.email} с паролем 123qwe456rty и добавлен в группу {group.name}")
+                f"Успешно создан контент-менеджер с email {user.email} с паролем 123qwe456rty и добавлен в группу {group.name}"
+            )
         )
 
         # создание тестового юзера №1
@@ -86,7 +103,9 @@ class Command(BaseCommand):
         # user.groups.add(group)
         user.save()
         self.stdout.write(
-            self.style.SUCCESS(f"Успешно создан тестовый пользователь с email {user.email} с паролем 123qwe456rty ")
+            self.style.SUCCESS(
+                f"Успешно создан тестовый пользователь с email {user.email} с паролем 123qwe456rty "
+            )
         )
 
         # создание тестового юзера №2
@@ -103,7 +122,7 @@ class Command(BaseCommand):
         # user.groups.add(group)
         user.save()
         self.stdout.write(
-            self.style.SUCCESS(f"Успешно создан тестовый пользователь с email {user.email} с паролем 123qwe456rty ")
+            self.style.SUCCESS(
+                f"Успешно создан тестовый пользователь с email {user.email} с паролем 123qwe456rty "
+            )
         )
-
-

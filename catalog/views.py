@@ -1,6 +1,4 @@
-from itertools import product, filterfalse
-
-from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse, HttpResponseForbidden
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
@@ -44,7 +42,6 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
         return HttpResponseForbidden("Вы не можете изменять этот продукт.")
 
 
-
 class ProductDeleteView(LoginRequiredMixin, DeleteView):
     model = Product
     success_url = reverse_lazy("catalog:product_list")
@@ -53,7 +50,9 @@ class ProductDeleteView(LoginRequiredMixin, DeleteView):
         # Получаем объект продукта
         product = super().get_object()
         # Проверяем, является ли текущий пользователь владельцем продукта
-        if product.owner == self.request.user or request.user.has_perm('catalog.delete_product'):
+        if product.owner == self.request.user or request.user.has_perm(
+            "catalog.delete_product"
+        ):
             return super().dispatch(request, *args, **kwargs)
 
         return HttpResponseForbidden("Вы не можете удалить этот продукт.")
@@ -75,10 +74,12 @@ class ProductListView(ListView):
         context = super().get_context_data(**kwargs)
 
         # Проверка, состоит ли пользователь в группе "Модератор продуктов"
-        is_moderator = self.request.user.groups.filter(name="Модератор продуктов").exists()
+        is_moderator = self.request.user.groups.filter(
+            name="Модератор продуктов"
+        ).exists()
 
         # Добавляем в контекст информацию, что пользователь является модератором
-        context['is_moderator'] = is_moderator
+        context["is_moderator"] = is_moderator
         return context
 
 
@@ -103,7 +104,9 @@ class ProductUnpublishView(LoginRequiredMixin, View):
         product = get_object_or_404(Product, pk=pk)
 
         if not request.user.has_perm("catalog.can_unpublish_product"):
-            return HttpResponseForbidden("У вас нет прав для снятия продукта с публикации")
+            return HttpResponseForbidden(
+                "У вас нет прав для снятия продукта с публикации"
+            )
 
         # Логика снятия с публикации
         product.is_published = False

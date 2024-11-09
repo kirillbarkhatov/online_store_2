@@ -22,10 +22,12 @@ class BlogEntryListView(LoginRequiredMixin, ListView):
         context = super().get_context_data(**kwargs)
 
         # Проверка, состоит ли пользователь в группе "Модератор продуктов"
-        is_content_manager = self.request.user.groups.filter(name="Контент-менеджер").exists()
+        is_content_manager = self.request.user.groups.filter(
+            name="Контент-менеджер"
+        ).exists()
 
         # Добавляем в контекст информацию, что пользователь является модератором
-        context['is_content_manager'] = is_content_manager
+        context["is_content_manager"] = is_content_manager
         return context
 
 
@@ -36,7 +38,9 @@ class AllBlogEntryListView(LoginRequiredMixin, ListView):
     def dispatch(self, request, *args, **kwargs):
 
         # Проверка, состоит ли пользователь в группе "Контент-менеджер"
-        is_content_manager = self.request.user.groups.filter(name="Контент-менеджер").exists()
+        is_content_manager = self.request.user.groups.filter(
+            name="Контент-менеджер"
+        ).exists()
 
         if is_content_manager:
             return super().dispatch(request, *args, **kwargs)
@@ -47,10 +51,12 @@ class AllBlogEntryListView(LoginRequiredMixin, ListView):
         context = super().get_context_data(**kwargs)
 
         # Проверка, состоит ли пользователь в группе "Модератор продуктов"
-        is_content_manager = self.request.user.groups.filter(name="Контент-менеджер").exists()
+        is_content_manager = self.request.user.groups.filter(
+            name="Контент-менеджер"
+        ).exists()
 
         # Добавляем в контекст информацию, что пользователь является модератором
-        context['is_content_manager'] = is_content_manager
+        context["is_content_manager"] = is_content_manager
         return context
 
 

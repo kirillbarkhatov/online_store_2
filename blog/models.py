@@ -1,4 +1,5 @@
 from django.db import models
+
 from users.models import CustomUser
 
 
@@ -22,7 +23,7 @@ class BlogEntry(models.Model):
         null=True,
         blank=True,
         related_name="authors",
-        verbose_name="Автор"
+        verbose_name="Автор",
     )
 
     def __str__(self):

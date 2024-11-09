@@ -1,6 +1,6 @@
 from django.db import models
-from users.models import CustomUser
 
+from users.models import CustomUser
 
 # Create your models here.
 
@@ -49,7 +49,7 @@ class Product(models.Model):
         null=True,
         blank=True,
         related_name="user_products",
-        verbose_name="Владелец"
+        verbose_name="Владелец",
     )
 
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
