@@ -17,7 +17,7 @@
     <a class="btn btn-lg btn-block btn-outline-primary" href="{% url 'blog:all_blogentry_list' %}">Управлять
         публикациями</a>
     {% else %}
-    <a class="btn btn-lg btn-block btn-outline-primary" href="#">МОИ ЗАПИСИ В БЛОГЕ</a>
+    <a class="btn btn-lg btn-block btn-outline-primary" href="{% url 'blog:my_blogentry_list' %}">МОИ ЗАПИСИ В БЛОГЕ</a>
     {% endif %}
 
 </div>
@@ -44,21 +44,37 @@
                         </div>
                     </div>
                     <div class="col-2">
-                        <div class="card-body">
-                            <a type="button" class="btn btn-outline-primary"
+                        <div class="card-body d-flex flex-column" style="height: 100%;">
+                            <!-- Растягиваем все кнопки на всю ширину -->
+                            <a type="button" class="btn btn-outline-primary mb-2 w-100"
                                href="{% url 'blog:blogentry_detail' blog_entry.pk %}">Подробнее</a>
-                            <a type="button" class="btn btn-outline-primary"
+                            {% if blog_entry.author == user %}
+                            <a type="button" class="btn btn-outline-primary mb-2 w-100"
                                href="{% url 'blog:blogentry_update' blog_entry.pk %}">Изменить</a>
-                            <a type="button" class="btn btn-outline-danger"
+                            <a type="button" class="btn btn-outline-danger mb-2 w-100"
                                href="{% url 'blog:blogentry_delete' blog_entry.pk %}">Удалить</a>
-                            {% if is_content_manager %}
+                            {% endif %}
+
+                            {% if blog_entry.author == user or is_content_manager %}
+                            {% if blog_entry.is_published %}
                             <form action="{% url 'blog:blogentry_unpublish' blog_entry.pk %}" method="post">
                                 {% csrf_token %}
-                                <button type="submit" class="btn btn-outline-danger btn-sm">Снять с публикации</button>
+                                <button type="submit" class="btn btn-outline-danger mb-2 btn-sm w-100 mt-auto">Снять с
+                                    публикации
+                                </button>
                             </form>
+                            {% endif %}
+                            {% if not blog_entry.is_published %}
+                            <form action="{% url 'blog:blogentry_publish' blog_entry.pk %}" method="post">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-outline-success btn-sm w-100 mt-auto">Опубликовать
+                                </button>
+                            </form>
+                            {% endif %}
                             {% endif %}
                         </div>
                     </div>
+
                 </div>
             </div>
 

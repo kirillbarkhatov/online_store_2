@@ -34,6 +34,15 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
     form_class = ProductForm
     success_url = reverse_lazy("catalog:product_list")
 
+    def dispatch(self, request, *args, **kwargs):
+        # Получаем объект продукта
+        product = super().get_object()
+        # Проверяем, является ли текущий пользователь владельцем продукта
+        if product.owner == self.request.user:
+            return super().dispatch(request, *args, **kwargs)
+
+        return HttpResponseForbidden("Вы не можете изменять этот продукт.")
+
 
 
 class ProductDeleteView(LoginRequiredMixin, DeleteView):

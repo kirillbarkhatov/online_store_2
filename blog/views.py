@@ -51,8 +51,16 @@ class AllBlogEntryListView(LoginRequiredMixin, ListView):
 
         # Добавляем в контекст информацию, что пользователь является модератором
         context['is_content_manager'] = is_content_manager
-        print(context)
         return context
+
+
+class MyBlogEntryListView(LoginRequiredMixin, ListView):
+    model = BlogEntry
+    template_name = "blog/blogentry_list.html"
+
+    def get_queryset(self):
+        user = self.request.user
+        return super().get_queryset().filter(author=user)
 
 
 class BlogEntryCreateView(LoginRequiredMixin, CreateView):
@@ -63,6 +71,13 @@ class BlogEntryCreateView(LoginRequiredMixin, CreateView):
 
     success_url = reverse_lazy("blog:blogentry_list")
 
+    def form_valid(self, form):
+        blog_entry = form.save()
+        user = self.request.user
+        blog_entry.author = user
+        blog_entry.save()
+        return super().form_valid(form)
+
 
 class BlogEntryUpdateView(LoginRequiredMixin, UpdateView):
     model = BlogEntry
@@ -72,10 +87,28 @@ class BlogEntryUpdateView(LoginRequiredMixin, UpdateView):
     def get_success_url(self):
         return reverse("blog:blogentry_detail", args=[self.kwargs.get("pk")])
 
+    def dispatch(self, request, *args, **kwargs):
+        # Получаем объект записи
+        blog_entry = super().get_object()
+        # Проверяем, является ли текущий пользователь автором записи
+        if blog_entry.author == self.request.user:
+            return super().dispatch(request, *args, **kwargs)
+
+        return HttpResponseForbidden("Вы не можете изменять эту запись.")
+
 
 class BlogEntryDeleteView(LoginRequiredMixin, DeleteView):
     model = BlogEntry
     success_url = reverse_lazy("blog:blogentry_list")
+
+    def dispatch(self, request, *args, **kwargs):
+        # Получаем объект записи
+        blog_entry = super().get_object()
+        # Проверяем, является ли текущий пользователь автором записи
+        if blog_entry.author == self.request.user:
+            return super().dispatch(request, *args, **kwargs)
+
+        return HttpResponseForbidden("Вы не можете удалять эту запись.")
 
 
 class BlogEntryDetailView(LoginRequiredMixin, DetailView):
@@ -112,25 +145,35 @@ class BlogEntryUnpublishView(LoginRequiredMixin, View):
     def post(self, request, pk):
         blog_entry = get_object_or_404(BlogEntry, pk=pk)
 
-        if not request.user.has_perm("blog.can_unpublish_blogentry"):
-            return HttpResponseForbidden("У вас нет прав для снятия записи с публикации")
+        if request.user.has_perm("blog.can_unpublish_blogentry"):
+            # Логика снятия с публикации
+            blog_entry.is_published = False
+            blog_entry.save()
+            return redirect("blog:all_blogentry_list")
 
-        # Логика снятия с публикации
-        blog_entry.is_published = False
-        blog_entry.save()
+        if blog_entry.author == self.request.user:
+            # Логика снятия с публикации
+            blog_entry.is_published = False
+            blog_entry.save()
+            return redirect("blog:blogentry_list")
 
-        return redirect("blog:all_blogentry_list")
+        return HttpResponseForbidden("У вас нет прав для снятия записи с публикации")
 
 
 class BlogEntryPublishView(LoginRequiredMixin, View):
     def post(self, request, pk):
         blog_entry = get_object_or_404(BlogEntry, pk=pk)
 
-        if not request.user.has_perm("blog.can_unpublish_blogentry"):
-            return HttpResponseForbidden("У вас нет прав для публикации этой записи")
+        if request.user.has_perm("blog.can_unpublish_blogentry"):
+            # Логика снятия с публикации
+            blog_entry.is_published = True
+            blog_entry.save()
+            return redirect("blog:all_blogentry_list")
 
-        # Логика снятия с публикации
-        blog_entry.is_published = True
-        blog_entry.save()
+        if blog_entry.author == self.request.user:
+            # Логика снятия с публикации
+            blog_entry.is_published = True
+            blog_entry.save()
+            return redirect("blog:blogentry_list")
 
-        return redirect("blog:all_blogentry_list")
+        return HttpResponseForbidden("У вас нет прав для публикации этой записи")
