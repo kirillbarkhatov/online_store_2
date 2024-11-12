@@ -42,6 +42,7 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
         return HttpResponseForbidden("Вы не можете изменять этот продукт.")
 
 
+
 class ProductDeleteView(LoginRequiredMixin, DeleteView):
     model = Product
     success_url = reverse_lazy("catalog:product_list")
