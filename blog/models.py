@@ -1,5 +1,7 @@
 from django.db import models
 
+from users.models import CustomUser
+
 
 # Create your models here.
 class BlogEntry(models.Model):
@@ -15,6 +17,14 @@ class BlogEntry(models.Model):
     view_count = models.PositiveIntegerField(
         default=0, verbose_name="Количество просмотров"
     )
+    author = models.ForeignKey(
+        CustomUser,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="authors",
+        verbose_name="Автор",
+    )
 
     def __str__(self):
         return self.title
@@ -24,4 +34,7 @@ class BlogEntry(models.Model):
         verbose_name_plural = "Записи"
         ordering = [
             "created_at",
+        ]
+        permissions = [
+            ("can_unpublish_blogentry", "Can unpublish blogentry"),
         ]

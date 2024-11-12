@@ -35,6 +35,7 @@ class ProductForm(StyleFormMixin, ModelForm):
         model = Product
         # Включаем все поля с модели в форму
         fields = "__all__"
+        exclude = ("owner",)
 
     def clean_name(self):
         name = self.cleaned_data.get("name")
@@ -69,8 +70,9 @@ class ProductForm(StyleFormMixin, ModelForm):
                 image.name.lower().endswith(".jpg")
                 or image.name.lower().endswith(".jpeg")
                 or image.name.lower().endswith(".png")
+                or image.name.lower().endswith(".webp")
             ):
-                raise ValidationError("Только JPEG и PNG файлы разрешены.")
+                raise ValidationError("Только JPEG, PNG или WEBP файлы разрешены.")
 
             # Проверка размера файла
             if image.size > 5 * 1024 * 1024:  # 5 МБ в байтах

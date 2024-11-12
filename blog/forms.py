@@ -12,4 +12,7 @@ class BlogEntryForm(StyleFormMixin, ModelForm):
         # которой создается форма
         model = BlogEntry
         # Включаем все поля с модели в форму
-        exclude = ("view_count",)
+        exclude = (
+            "view_count",
+            "author",
+        )

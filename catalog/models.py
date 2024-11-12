@@ -1,5 +1,7 @@
 from django.db import models
 
+from users.models import CustomUser
+
 # Create your models here.
 
 
@@ -39,6 +41,17 @@ class Product(models.Model):
     price = models.DecimalField(
         max_digits=10, decimal_places=2, verbose_name="Цена в рублях"
     )
+
+    is_published = models.BooleanField(default=False, verbose_name="Статус публикации")
+    owner = models.ForeignKey(
+        CustomUser,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="user_products",
+        verbose_name="Владелец",
+    )
+
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
     update_at = models.DateTimeField(auto_now=True, verbose_name="Дата обновления")
 
@@ -50,6 +63,9 @@ class Product(models.Model):
         verbose_name_plural = "Продукты"
         ordering = [
             "name",
+        ]
+        permissions = [
+            ("can_unpublish_product", "Can unpublish product"),
         ]
 
 

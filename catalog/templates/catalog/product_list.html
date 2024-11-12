@@ -8,8 +8,10 @@
 
 <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
     <h1 class="display-4">Skystore</h1>
-
-    <a type="button" class="btn btn-lg btn-block btn-outline-primary" href="{% url 'catalog:product_create' %}">Добавить продукт</a>
+    {% if user.is_authenticated %}
+    <a type="button" class="btn btn-lg btn-block btn-outline-primary" href="{% url 'catalog:product_create' %}">Добавить
+        продукт</a>
+    {% endif %}
 </div>
 
 <div class="container">
@@ -19,26 +21,56 @@
         <div class="col-4 d-flex">
             <div class="card mb-4 box-shadow w-100">
                 <div class="card-header">
-                    <img src="{{ product.image | media_filter }}" class="img-fluid" style="height: 12rem; object-fit: cover;">
+                    <img src="{{ product.image | media_filter }}" class="img-fluid"
+                         style="height: 12rem; object-fit: cover;">
                 </div>
                 <div class="card-body">
                     <h5 class="card-title">{{ product.name }}</h3>
-                    <p>Категория: {{ product.category }}</p>
+                        <p>Категория: {{ product.category }}</p>
 
-                    <p>{{ product.description|truncatechars:100 }}</p>
+                        <p>{{ product.description|truncatechars:100 }}</p>
 
-                    <h3 class="card-title pricing-card-title">{{ product.price }}</h3>
-                    <a type="button" class="btn btn-outline-primary" href="{% url 'catalog:product_detail' product.pk %}">Подробнее</a>
-                    <a type="button" class="btn btn-outline-primary" href="{% url 'catalog:product_update' product.pk %}">Изменить</a>
-                    <a type="button" class="btn btn-outline-danger" href="{% url 'catalog:product_delete' product.pk %}">Удалить</a>
+                        <h3 class="card-title pricing-card-title">{{ product.price }}</h3>
+                        <a type="button" class="btn btn-outline-primary"
+                           href="{% url 'catalog:product_detail' product.pk %}">Подробнее</a>
+
+
+                        {% if product.owner == user %}
+                        <a type="button" class="btn btn-outline-primary"
+                           href="{% url 'catalog:product_update' product.pk %}">Изменить</a>
+                        {% endif %}
+
+
+                        {% if not product.is_published %}
+                        <br>
+                        <br>
+                        <p class="text-danger">!!! ПРОДУКТ СНЯТ С ПУБЛИКАЦИИ !!!</p>
+                        {% endif %}
+
+
                 </div>
+                {% if product.owner == user or is_moderator %}
+                <div class="card-footer d-flex justify-content-end mt-2">
+                    {% if is_moderator %}
+                    <form action="{% url 'catalog:product_unpublish' product.pk %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-outline-danger btn-sm">Снять с публикации</button>
+                    </form>
+                    {% endif %}
+                    {% if product.owner == user or is_moderator %}
+                    <a type="button" class="btn btn-outline-danger btn-sm ms-2"
+                       href="{% url 'catalog:product_delete' product.pk %}">Удалить</a>
+                    {% endif %}
+
+                </div>
+                {% endif %}
             </div>
         </div>
         {% endfor %}
 
     </div>
     <div class="col-12">
-    {% include "catalog/includes/inc_nav.html" %}
+        {% include "catalog/includes/inc_nav.html" %}
     </div>
 </div>
 
