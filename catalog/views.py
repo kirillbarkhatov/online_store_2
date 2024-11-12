@@ -1,18 +1,14 @@
-from django.core.cache import cache
-
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import HttpResponse, HttpResponseForbidden, HttpResponseRedirect
-
+from django.core.cache import cache
+from django.http import HttpResponse, HttpResponseForbidden
 from django.shortcuts import get_object_or_404, redirect
-from django.template.context_processors import request
-from django.urls import reverse_lazy, reverse
+from django.urls import reverse_lazy
 from django.views.generic import DetailView, ListView, TemplateView, View
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 
 from catalog.forms import ProductForm
-from catalog.models import Contact, Product, Category
+from catalog.models import Category, Contact, Product
 from catalog.services import products_by_category
-
 
 # Create your views here.
 
@@ -46,7 +42,6 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
             return super().dispatch(request, *args, **kwargs)
 
         return HttpResponseForbidden("Вы не можете изменять этот продукт.")
-
 
 
 class ProductDeleteView(LoginRequiredMixin, DeleteView):
