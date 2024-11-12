@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 import os
+from dis import CACHE
 from pathlib import Path
 
 from django.conf.global_settings import (
@@ -163,3 +164,11 @@ AUTH_USER_MODEL = "users.CustomUser"
 LOGIN_REDIRECT_URL = "catalog:product_list"
 LOGOUT_REDIRECT_URL = "catalog:product_list"
 LOGIN_URL = "users:login"
+
+CACHE_ENABLED = True
+CACHE = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.redis.RedisCache',
+        'LOCATION': os.getenv('LOCATION'),
+    }
+}
