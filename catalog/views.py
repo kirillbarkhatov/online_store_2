@@ -1,12 +1,15 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import HttpResponse, HttpResponseForbidden
+from django.http import HttpResponse, HttpResponseForbidden, HttpResponseRedirect
+
 from django.shortcuts import get_object_or_404, redirect
-from django.urls import reverse_lazy
+from django.template.context_processors import request
+from django.urls import reverse_lazy, reverse
 from django.views.generic import DetailView, ListView, TemplateView, View
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 
 from catalog.forms import ProductForm
-from catalog.models import Contact, Product
+from catalog.models import Contact, Product, Category
+
 
 # Create your views here.
 
@@ -81,6 +84,39 @@ class ProductListView(ListView):
 
         # Добавляем в контекст информацию, что пользователь является модератором
         context["is_moderator"] = is_moderator
+        categories = Category.objects.all()
+        context["categories"] = categories
+
+        return context
+
+
+class ProductByCategoryListView(ListView):
+    model = Product
+    paginate_by = 3
+    template_name = "catalog/product_by_category_list.html"
+
+    def get_queryset(self):
+        # Получаем ID категории из параметров GET
+        category_id = self.request.GET.get("category")
+
+        if category_id:
+            return Product.objects.filter(category_id=category_id, is_published=True)
+        return Product.objects.filter(is_published=True)  # Показываем все продукты, если категория не выбрана
+
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        # Проверка, состоит ли пользователь в группе "Модератор продуктов"
+        is_moderator = self.request.user.groups.filter(
+            name="Модератор продуктов"
+        ).exists()
+
+        # Добавляем в контекст информацию, что пользователь является модератором
+        context["is_moderator"] = is_moderator
+        categories = Category.objects.all()
+        context["categories"] = categories
+
         return context
 
 
