@@ -1,4 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.cache import cache
 from django.http import HttpResponse, HttpResponseForbidden
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
@@ -6,7 +7,8 @@ from django.views.generic import DetailView, ListView, TemplateView, View
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 
 from catalog.forms import ProductForm
-from catalog.models import Contact, Product
+from catalog.models import Category, Contact, Product
+from catalog.services import products_by_category
 
 # Create your views here.
 
@@ -63,12 +65,17 @@ class ProductListView(ListView):
     paginate_by = 3
 
     def get_queryset(self):
-        # в теле класса не работает вывод в консоль - только так
-        products = Product.objects.all().order_by("-created_at")[:5]
-        for product in products:
+
+        products = cache.get("products")
+        if not products:
+            products = Product.objects.all()
+            cache.set("products", products, 60)
+
+        products_last_5 = products.order_by("-created_at")[:5]
+        for product in products_last_5:
             print(product.name)
 
-        return Product.objects.filter(is_published=True)
+        return products.filter(is_published=True)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -80,6 +87,36 @@ class ProductListView(ListView):
 
         # Добавляем в контекст информацию, что пользователь является модератором
         context["is_moderator"] = is_moderator
+        categories = Category.objects.all()
+        context["categories"] = categories
+
+        return context
+
+
+class ProductByCategoryListView(ListView):
+    model = Product
+    paginate_by = 3
+    template_name = "catalog/product_by_category_list.html"
+
+    def get_queryset(self):
+        # Получаем ID категории из параметров GET
+        category_id = self.request.GET.get("category")
+
+        return products_by_category(category_id)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        # Проверка, состоит ли пользователь в группе "Модератор продуктов"
+        is_moderator = self.request.user.groups.filter(
+            name="Модератор продуктов"
+        ).exists()
+
+        # Добавляем в контекст информацию, что пользователь является модератором
+        context["is_moderator"] = is_moderator
+        categories = Category.objects.all()
+        context["categories"] = categories
+
         return context
 
 
