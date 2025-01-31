@@ -18,7 +18,7 @@ from django.conf.global_settings import (
     LOGIN_REDIRECT_URL,
     LOGIN_URL,
     LOGOUT_REDIRECT_URL,
-    SERVER_EMAIL,
+    SERVER_EMAIL, STATIC_ROOT,
 )
 from dotenv import load_dotenv
 
@@ -37,7 +37,7 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True if os.getenv("DEBUG") == "True" else False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -149,6 +149,7 @@ SERVER_EMAIL = EMAIL_HOST_USER
 STATIC_URL = "static/"
 
 STATICFILES_DIRS = [BASE_DIR / "static"]
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 MEDIA_URL = "media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
