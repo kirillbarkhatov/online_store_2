@@ -21,8 +21,8 @@ services:
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
       - static_volume:/app/staticfiles
-    depend_on:
-      -web
+    depends_on:
+      - web
 
   db:
     image: postgres:16

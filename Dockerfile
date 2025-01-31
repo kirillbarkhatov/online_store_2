@@ -8,8 +8,17 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 
-COPY . .
+# Устанавливаем Poetry
+RUN pip install poetry
 
-RUN poetry install
+# Копируем файлы проекта
+COPY pyproject.toml poetry.lock ./
+
+# Устанавливаем зависимости через Poetry
+RUN poetry config virtualenvs.create false \
+  && poetry install --no-root --no-interaction --no-ansi
+
+# Копируем остальные файлы проекта
+COPY . .
 
 EXPOSE 8000
