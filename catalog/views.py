@@ -57,6 +57,7 @@ class ProductDeleteView(LoginRequiredMixin, DeleteView):
         ):
             return super().dispatch(request, *args, **kwargs)
 
+
         return HttpResponseForbidden("Вы не можете удалить этот продукт.")
 
 
